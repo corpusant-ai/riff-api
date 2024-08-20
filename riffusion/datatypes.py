@@ -1,0 +1,63 @@
+import typing as T
+
+from pydantic import BaseModel
+
+
+class Prompt(BaseModel):
+    """
+    A sound prompt to use for music generation.
+    """
+
+    text: str
+    """ Description of the sound """
+
+    strength: float = 4.0
+    """ Power of this prompt between 1 (low) and 12 (max) """
+
+    start_s: float = 0.0
+    """ Start time where the prompt takes effect """
+
+    end_s: float = 30.0
+    """ End time where the prompt takes effect"""
+
+
+class RiffRequest(BaseModel):
+    """
+    Input parameters to create music.
+    """
+
+    prompts: list[Prompt]
+    """ A list of sound prompts """
+
+    lyrics: str | None = None
+    """ Lyrics to sing (optional) """
+
+    audio_format: T.Literal["m4a", "wav", "mp3"] = "m4a"
+    """ Returned audio format """
+
+    moderate_inputs: bool = True
+    """ If True, runs moderation checks on the prompts and lyrics """
+
+
+class TimestampedWord(BaseModel):
+    """
+    A word from the lyrics with a start and end time.
+    """
+
+    value: str
+    start_time_s: float
+
+
+class RiffResponse(BaseModel):
+    """
+    Output of the API.
+    """
+
+    id: str
+    """ UUID of the output"""
+
+    audio_b64: str
+    """ Base64 encoded bytes of the requested audio format """
+
+    timestamped_lyrics: list[TimestampedWord]
+    """ Timestamps for each word in the lyrics """
