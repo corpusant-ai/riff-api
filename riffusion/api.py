@@ -1,7 +1,7 @@
 import os
 import requests
 
-from .datatypes import RiffRequest, RiffResponse
+from .datatypes import Prompt, RiffRequest, RiffResponse, TimestampedWord
 
 
 def generate_music(
@@ -26,3 +26,11 @@ def generate_music(
     response.raise_for_status()
 
     return RiffResponse(**response.json())
+
+__all__ = [
+    "Prompt",
+    "RiffRequest",
+    "RiffResponse",
+    "TimestampedWord",
+    "generate_music",
+]

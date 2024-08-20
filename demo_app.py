@@ -1,7 +1,8 @@
+import base64
+
 import streamlit as st
 
-from riffusion.api import generate_music
-from riffusion.datatypes import Prompt, RiffRequest
+from riffusion.api import generate_music, Prompt, RiffRequest
 
 
 def main() -> None:
@@ -19,10 +20,11 @@ def main() -> None:
 
     response = generate_music(request)
 
-    # TODO
+    audio_bytes = base64.b64decode(response.audio_b64)
 
-    st.write(response)
+    st.audio(audio_bytes, format="audio/m4a")
 
+    # TODO show timestamped lyrics
 
 if __name__ == "__main__":
     main()
