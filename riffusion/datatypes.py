@@ -35,7 +35,7 @@ class RiffRequest(BaseModel):
     seed: int | None = None
     """ Random seed for reproducible results (optional) """
 
-    audio_format: T.Literal["m4a", "wav", "mp3"] = "m4a"
+    audio_format: T.Literal["wav", "m4a", "mp3"] = "wav"
     """ Returned audio format """
 
     moderate_inputs: bool = True
