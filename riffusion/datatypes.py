@@ -32,6 +32,9 @@ class RiffRequest(BaseModel):
     lyrics: str | None = None
     """ Lyrics to sing (optional) """
 
+    seed: int | None = None
+    """ Random seed for reproducible results (optional) """
+
     audio_format: T.Literal["m4a", "wav", "mp3"] = "m4a"
     """ Returned audio format """
 
@@ -44,8 +47,8 @@ class TimestampedWord(BaseModel):
     A word from the lyrics with a start and end time.
     """
 
-    value: str
-    start_time_s: float
+    text: str
+    start_s: float
 
 
 class RiffResponse(BaseModel):
