@@ -7,7 +7,7 @@ from .datatypes import Prompt, RiffRequest, RiffResponse, TimestampedWord
 def generate_music(
     request: RiffRequest,
     api_key: str | None = None,
-    endpoint: str = "https://backend.riffusion.com/v1/riff",
+    endpoint: str = "https://dev-backend.riffusion.com/v1/riff",
 ) -> RiffResponse:
     """
     Generate music using the Riffusion API.

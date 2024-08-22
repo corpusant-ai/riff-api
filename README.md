@@ -1,14 +1,13 @@
 # 🎸 Riffusion API
 
-This repo contains instructions for using the Riffusion API to create music
-based on sound prompts and lyrics.
+This repo contains minimal examples for creating music with the Riffusion API.
 
 ## Usage
 
 Add your API key:
 
 ```bash
-export RIFFUSION_API_KEY=<your-api-key>
+export RIFFUSION_API_KEY="<your-api-key>"
 ```
 
 Run via Python:
@@ -28,7 +27,12 @@ response = requests.post(
         'prompts': [
             { "text": "chillstep pop" },
         ],
-        'lyrics': "Hello from outer space\nCan you hear me?",
+        'lyrics': (
+            "Hello from outer space\n"
+            "Can you hear me?\n"
+            "I'm a satellite\n"
+            "And I want to be by your side"
+        ),
     },
 ).json()
 
@@ -36,17 +40,24 @@ with open("output.wav", "wb") as f:
     f.write(base64.b64decode(response["audio_b64"]))
 ```
 
-Run via Python with strong types:
+Run via Python with types:
 
 ```python
 from riffusion.api import generate_music, Prompt, RiffRequest
+
+lyrics = """
+Hello from outer space
+Can you hear me?
+I'm a satellite
+And I want to be by your side
+""".strip()
 
 response = generate_music(
     RiffRequest(
         prompts=[
             Prompt(text="chillstep pop"),
         ],
-        lyrics="Hello from outer space\nCan you hear me?",
+        lyrics=lyrics,
     )
 )
 
@@ -72,12 +83,15 @@ TODO
 
 ## Streamlit Demo
 
-Run:
+A simple Streamlit app is provided to demonstrate the API. This app allows
+you to create a genre transition using two sound prompts with time ranges.
+
+Test it at https://riffusion-api.streamlit.app/
+
+To run locally:
 
 ```bash
 python -m streamlit run demo_app.py
 ```
 
-Hosted at:
-
-TODO
+![Streamlit Demo](https://storage.googleapis.com/corpusant-public/riffusion_demo_app.png)
