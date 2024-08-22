@@ -90,7 +90,7 @@ def main() -> None:
 
     # Decode and display audio
     audio_bytes = base64.b64decode(response.audio_b64)
-    st.audio(audio_bytes, format="audio/m4a")
+    st.audio(audio_bytes, format="audio/wav")
 
     st.write(f"⚡️ Generated in {duration_s:.2f} seconds")
 
