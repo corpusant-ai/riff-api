@@ -2,8 +2,8 @@
 
 This repo contains minimal examples for creating music with the Riffusion API.
 
-[!NOTE]  
-This API is in a private beta and subject to change. Contact api@riffusion.com for questions.
+> [!NOTE]  
+> This API is in a private beta and subject to change. Contact api@riffusion.com for questions.
 
 ## Usage
 
