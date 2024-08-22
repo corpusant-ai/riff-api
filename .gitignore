@@ -138,3 +138,12 @@ dmypy.json
 
 # Frontend build
 node_modules/
+
+.ruff_cache
+
+*.egg-info
+
+# Ignore audio files
+*.wav
+*.m4a
+*.mp3

@@ -10,7 +10,7 @@ Add your API key:
 export RIFFUSION_API_KEY="<your-api-key>"
 ```
 
-Run via Python:
+Run via Python (`pip install requests`):
 
 ```python
 import base64
@@ -40,10 +40,10 @@ with open("output.wav", "wb") as f:
     f.write(base64.b64decode(response["audio_b64"]))
 ```
 
-Run via Python with types:
+Run via Python with types (`pip install .`)
 
 ```python
-from riffusion.api import generate_music, Prompt, RiffRequest
+import riffusion_api import generate_music, Prompt, RiffRequest
 
 lyrics = """
 Hello from outer space
@@ -77,21 +77,41 @@ curl -X POST \
   | jq -r .audio_b64 | base64 -d > output.wav
 ```
 
+The file [datatypes.py](riffusion_api/datatypes.py) shows the schema of the API.
+
 ## Examples
 
-TODO
+The `examples` directory explains use cases of the API. To run, first `pip install .` then execute with Python 3.
+
+ * [1_simple.py](examples/1_simple.py) - Use lyrics and a sound prompt to create music.
+
+ * [2_instrumental.py](examples/2_instrumental.py) - Pass no lyrics to create instrumental music.
+
+ * [3_variations.py](examples/3_variations.py) - Hold a constant seed while modifying other parameters to create variations.
+
+ * [4_multiple_prompts.py](examples/4_multiple_prompts.py) - Use two sound prompts with different strengths to fine tune the output.
+
+ * [5_transition.py](examples/5_transition.py) - Use two sound prompts with start/end times to create a transition.
+
+ * [6_audio_formats.py](examples/6_audio_formats.py) - Change the audio format of the response.
+
+ * [7_timestamped_lyrics.py](examples/7_timestamped_lyrics.py) - Print the timestamp of each lyric from the generation response.
 
 ## Streamlit Demo
 
-A simple Streamlit app is provided to demonstrate the API. This app allows
-you to create a genre transition using two sound prompts with time ranges.
+This interactive Streamlit app demonstrates using the api
+to create musical transitions using two sound prompts with time ranges.
 
-Test it at https://riffusion-api.streamlit.app/
-
-To run locally:
+Run locally:
 
 ```bash
 python -m streamlit run demo_app.py
 ```
 
-![Streamlit Demo](https://storage.googleapis.com/corpusant-public/riffusion_demo_app.png)
+Or try it at: https://riffusion-api.streamlit.app/
+
+<img src="https://storage.googleapis.com/corpusant-public/riffusion_demo_app.png" width="400px" />
+
+## Terms
+
+This API is in a private beta. Do not share externally or use for commercial purposes.

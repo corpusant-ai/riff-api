@@ -3,7 +3,7 @@ import time
 
 import streamlit as st
 
-from riffusion.api import generate_music, Prompt, RiffRequest
+from riffusion_api import generate_music, Prompt, RiffRequest
 
 default_lyrics = """
 [Verse]

@@ -1,7 +1,8 @@
+import base64
 import os
 import requests
 
-from .datatypes import Prompt, RiffRequest, RiffResponse, TimestampedWord
+from .datatypes import RiffRequest, RiffResponse
 
 
 def generate_music(
@@ -26,10 +27,13 @@ def generate_music(
     return RiffResponse(**response.json())
 
 
-__all__ = [
-    "Prompt",
-    "RiffRequest",
-    "RiffResponse",
-    "TimestampedWord",
-    "generate_music",
-]
+def save_audio(
+    response: RiffResponse,
+    filename: str,
+) -> None:
+    """
+    Save the audio from a Riffusion response to a file.
+    """
+    audio_bytes = base64.b64decode(response.audio_b64)
+    with open(filename, "wb") as f:
+        f.write(audio_bytes)
