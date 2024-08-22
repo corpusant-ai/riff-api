@@ -2,6 +2,9 @@
 
 This repo contains minimal examples for creating music with the Riffusion API.
 
+[!NOTE]  
+This API is in a private beta and subject to change. Contact api@riffusion.com for questions.
+
 ## Usage
 
 Add your API key:
@@ -112,7 +115,3 @@ python -m streamlit run demo_app.py
 ```
 
 <img src="https://storage.googleapis.com/corpusant-public/riffusion_demo_app.png" width="500px" />
-
-## Terms
-
-This API is in a private beta. Do not share externally or use for commercial purposes.
