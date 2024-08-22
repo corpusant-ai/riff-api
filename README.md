@@ -99,10 +99,11 @@ The `examples` directory explains use cases of the API. To run, first `pip insta
 
 ## Streamlit Demo
 
-This interactive app demonstrates using the api
-to create musical transitions using two sound prompts with time ranges.
+[demo_app.py](demo_app.py) is an interactive web app (built with Streamlit) that
+demonstrates using the api to create musical transitions using two sound prompts
+with time ranges.
 
-Try it at: https://riffusion-api-demo.streamlit.app/
+Try it at: [https://riffusion-api-demo.streamlit.app/](https://riffusion-api-demo.streamlit.app/)
 
 Run locally:
 
