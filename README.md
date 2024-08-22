@@ -43,7 +43,7 @@ with open("output.wav", "wb") as f:
 Run via Python with types (`pip install .`):
 
 ```python
-import riffusion_api import generate_music, Prompt, RiffRequest
+from riffusion_api import generate_music, Prompt, RiffRequest
 
 lyrics = """
 Hello from outer space
