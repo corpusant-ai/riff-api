@@ -40,7 +40,7 @@ with open("output.wav", "wb") as f:
     f.write(base64.b64decode(response["audio_b64"]))
 ```
 
-Run via Python with types (`pip install .`)
+Run via Python with types (`pip install .`):
 
 ```python
 import riffusion_api import generate_music, Prompt, RiffRequest
@@ -110,7 +110,7 @@ python -m streamlit run demo_app.py
 
 Or try it at: https://riffusion-api.streamlit.app/
 
-<img src="https://storage.googleapis.com/corpusant-public/riffusion_demo_app.png" width="400px" />
+<img src="https://storage.googleapis.com/corpusant-public/riffusion_demo_app.png" width="500px" />
 
 ## Terms
 
