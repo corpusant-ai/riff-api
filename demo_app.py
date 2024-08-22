@@ -40,7 +40,12 @@ def main() -> None:
     Usage:
         python -m streamlit run demo_app.py
     """
-    st.write("### 🎸 Riffusion API Demo")
+    title = "Riffusion API Demo"
+    icon = "🎸"
+
+    st.set_page_config(page_title=title, page_icon=icon)
+
+    st.write(f"### {title} {icon}")
 
     with st.form("form"):
         lyrics = st.text_area(
