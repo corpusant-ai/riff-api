@@ -1,14 +1,12 @@
 """
 Pass no lyrics to create instrumental music.
 """
-from riffusion_api import generate_music, save_audio, Prompt, RiffRequest
+import riff_api
 
-response = generate_music(
-    RiffRequest(
-        prompts=[
-            Prompt(text="lo-fi cozy christmas jazz"),
-        ],
-    )
+response = riff_api.generate(
+    prompts=[
+        riff_api.Prompt(text="lo-fi cozy christmas jazz"),
+    ],
 )
 
-save_audio(response, "2_instrumental.wav")
+riff_api.save_audio(response, "2_instrumental.wav")

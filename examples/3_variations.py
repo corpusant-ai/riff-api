@@ -1,7 +1,7 @@
 """
 Hold a constant seed while modifying other parameters to create variations.
 """
-from riffusion_api import generate_music, save_audio, Prompt, RiffRequest
+import riff_api
 
 lyrics = """
 All that is gold does not glitter,
@@ -18,26 +18,22 @@ The crownless again shall be king.
 # Use the seed to preserve the overall structure
 seed = 90
 
-variation_a = generate_music(
-    RiffRequest(
-        prompts=[
-            Prompt(text="country folk, male singer"),
-        ],
-        lyrics=lyrics,
-        seed=seed,
-    )
+variation_a = riff_api.generate(
+    prompts=[
+        riff_api.Prompt(text="country folk, male singer"),
+    ],
+    lyrics=lyrics,
+    seed=seed,
 )
 
-save_audio(variation_a, "3_variations_a.wav")
+riff_api.save_audio(variation_a, "3_variations_a.wav")
 
-variation_b = generate_music(
-    RiffRequest(
-        prompts=[
-            Prompt(text="country folk, female singer"),
-        ],
-        lyrics=lyrics,
-        seed=seed,
-    )
+variation_b = riff_api.generate(
+    prompts=[
+        riff_api.Prompt(text="country folk, female singer"),
+    ],
+    lyrics=lyrics,
+    seed=seed,
 )
 
-save_audio(variation_b, "3_variations_b.wav")
+riff_api.save_audio(variation_b, "3_variations_b.wav")

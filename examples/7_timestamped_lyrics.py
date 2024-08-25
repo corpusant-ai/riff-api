@@ -1,7 +1,7 @@
 """
 Print the timestamp of each lyric from the generation response.
 """
-from riffusion_api import generate_music, save_audio, Prompt, RiffRequest
+import riff_api
 
 lyrics = """
 Hello from outer space
@@ -10,16 +10,14 @@ I'm a satellite
 And I want to be by your side
 """.strip()
 
-response = generate_music(
-    RiffRequest(
-        prompts=[
-            Prompt(text="chillstep pop"),
-        ],
-        lyrics=lyrics,
-    )
+response = riff_api.generate(
+    prompts=[
+        riff_api.Prompt(text="chillstep pop"),
+    ],
+    lyrics=lyrics,
 )
 
-save_audio(response, "7_timestamped_lyrics.wav")
+riff_api.save_audio(response, "7_timestamped_lyrics.wav")
 
 # Print each word's start time
 for word in response.timestamped_lyrics:

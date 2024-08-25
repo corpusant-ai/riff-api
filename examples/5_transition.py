@@ -1,7 +1,7 @@
 """
 Use two sound prompts with start/end times to control a transition.
 """
-from riffusion_api import generate_music, save_audio, Prompt, RiffRequest
+import riff_api
 
 lyrics = """
 [Verse]
@@ -16,13 +16,13 @@ A light from the shadows shall spring
 """.strip()
 
 prompts = [
-    Prompt(
+    riff_api.Prompt(
         text="operatic aria",
         start_s=0.0,
         end_s=20.0,
         strength=4.0,
     ),
-    Prompt(
+    riff_api.Prompt(
         text="tech house jazz",
         start_s=15.0,
         end_s=30.0,
@@ -30,11 +30,9 @@ prompts = [
     ),
 ]
 
-response = generate_music(
-    RiffRequest(
-        prompts=prompts,
-        lyrics=lyrics,
-    )
+response = riff_api.generate(
+    prompts=prompts,
+    lyrics=lyrics,
 )
 
-save_audio(response, "5_transition.wav")
+riff_api.save_audio(response, "5_transition.wav")

@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 class Prompt(BaseModel):
     """
-    A sound prompt to use for music generation.
+    A sound prompt to use for music generation
     """
 
     text: str
@@ -23,7 +23,7 @@ class Prompt(BaseModel):
 
 class RiffRequest(BaseModel):
     """
-    Input parameters to create music.
+    Input to the /riff endpoint
     """
 
     prompts: list[Prompt]
@@ -44,7 +44,7 @@ class RiffRequest(BaseModel):
 
 class TimestampedWord(BaseModel):
     """
-    A word from the lyrics with a start and end time.
+    A word from the lyrics with a start and end time
     """
 
     text: str
@@ -53,7 +53,7 @@ class TimestampedWord(BaseModel):
 
 class RiffResponse(BaseModel):
     """
-    Output of the API.
+    Output of the /riff endpoint
     """
 
     id: str
@@ -64,3 +64,15 @@ class RiffResponse(BaseModel):
 
     timestamped_lyrics: list[TimestampedWord]
     """ Timestamps for each word in the lyrics """
+
+
+class TopicRequest(BaseModel):
+    """
+    Input to the /topic endpoint
+    """
+
+    topic: str
+    """ Text description of the song to sing (lyrics and sound together) """
+
+    audio_format: str = "wav"
+    """ Returned audio format """

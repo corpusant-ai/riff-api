@@ -5,7 +5,7 @@ This repo contains minimal examples for creating music with the Riffusion API.
 > [!NOTE]  
 > This API is in a private beta and subject to change. Contact api@riffusion.com for questions.
 
-## Usage
+## Usage with `/topic`
 
 Add your API key:
 
@@ -13,7 +13,58 @@ Add your API key:
 export RIFFUSION_API_KEY="<your-api-key>"
 ```
 
-Run via Python (`pip install requests`):
+Run via request (`pip install requests`):
+
+```python
+import base64
+import os
+import requests
+
+response = requests.post(
+    "https://backend.riffusion.com/v1/topic",
+    headers={
+        "Content-Type": "application/json",
+        "Api-Key": os.environ.get("RIFFUSION_API_KEY"),
+    },
+    json={
+        "topic": "Indie pop banger about my dog Boris",
+    },
+).json()
+
+with open("0_topic_request.wav", "wb") as f:
+    f.write(base64.b64decode(response["audio_b64"]))
+```
+
+[boris.wav](https://storage.googleapis.com/corpusant-public/boris.wav)
+
+Run via Python client (`pip install .`):
+
+```python
+import riff_api
+
+response = riff_api.generate_from_topic(
+    "Indie pop banger about my dog Boris"
+    save="boris.wav",
+)
+riff_api.save_audio(response, "boris.wav")
+```
+
+Run via curl:
+
+```bash
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "Api-Key: ${RIFFUSION_API_KEY}" \
+  -d '{"topic": "Indie pop banger about my dog Boris"}' \
+  https://backend.riffusion.com/v1/topic \
+  | jq -r .audio_b64 | base64 -d > output.wav
+```
+
+The file [datatypes.py](riffusion_api/datatypes.py) shows the schema of the API.
+
+## Usage with `/riff`
+
+Run via request:
 
 ```python
 import base64
@@ -43,10 +94,10 @@ with open("output.wav", "wb") as f:
     f.write(base64.b64decode(response["audio_b64"]))
 ```
 
-Run via Python with types (`pip install .`):
+Run via Python client:
 
 ```python
-from riffusion_api import generate_music, Prompt, RiffRequest
+import riff_api
 
 lyrics = """
 Hello from outer space
@@ -55,32 +106,15 @@ I'm a satellite
 And I want to be by your side
 """.strip()
 
-response = generate_music(
-    RiffRequest(
-        prompts=[
-            Prompt(text="chillstep pop"),
-        ],
-        lyrics=lyrics,
-    )
+response = riff_api.generate(
+    prompts=[
+        Prompt(text="chillstep pop"),
+    ],
+    lyrics=lyrics,
 )
 
-import base64
-with open("output.wav", "wb") as f:
-    f.write(base64.b64decode(response.audio_b64))
+riff_api.save_audio(response.audio_b64, "output.wav")
 ```
-
-Run via curl:
-
-```bash
-curl -X POST \
-  -H "Content-Type: application/json" \
-  -H "Api-Key: ${RIFFUSION_API_KEY}" \
-  -d '{"prompts": [{"text": "chillstep pop"}], "lyrics": "Hello from outer space\nCan you hear me?"}' \
-  https://backend.riffusion.com/v1/riff \
-  | jq -r .audio_b64 | base64 -d > output.wav
-```
-
-The file [datatypes.py](riffusion_api/datatypes.py) shows the schema of the API.
 
 ## Examples
 
@@ -100,17 +134,20 @@ The `examples` directory explains use cases of the API. To run, first `pip insta
 
  * [7_timestamped_lyrics.py](examples/7_timestamped_lyrics.py) - Print the timestamp of each lyric from the generation response.
 
+ * [8_topic.py](examples/8_topic.py) - Use a single natural language sentence to generate music with the topic endpoint.
+
 ## Streamlit Demo
 
-[demo_app.py](demo_app.py) is an interactive web app (built with Streamlit) that
+[demo_app.py](demo_app.py) is a basic web app that
 demonstrates using the api to create musical transitions using two sound prompts
 with time ranges.
 
-Try it at: [https://riffusion-api-demo.streamlit.app/](https://riffusion-api-demo.streamlit.app/)
+Try it: [https://riffusion-api-demo.streamlit.app/](https://riffusion-api-demo.streamlit.app/)
 
-Run locally:
+Or run locally:
 
 ```bash
+pip install streamlit
 python -m streamlit run demo_app.py
 ```
 
