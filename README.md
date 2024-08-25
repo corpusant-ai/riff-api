@@ -1,17 +1,17 @@
 # 🎸 Riffusion API
 
-This repo contains minimal examples for creating music with the Riffusion API.
+This repo contains examples for creating music with the Riffusion API, either vai 
 
 > [!NOTE]  
 > This API is in a private beta and subject to change. Contact api@riffusion.com for questions.
 
-## Usage with `/topic`
-
-Add your API key:
+To use the API, first set your API key:
 
 ```bash
 export RIFFUSION_API_KEY="<your-api-key>"
 ```
+
+## `/topic`
 
 Run via request (`pip install requests`):
 
@@ -31,11 +31,11 @@ response = requests.post(
     },
 ).json()
 
-with open("0_topic_request.wav", "wb") as f:
+with open("output.wav", "wb") as f:
     f.write(base64.b64decode(response["audio_b64"]))
 ```
 
-[boris.wav](https://storage.googleapis.com/corpusant-public/boris.wav)
+Listen: [output.wav](https://storage.googleapis.com/corpusant-public/output.wav)
 
 Run via Python client (`pip install .`):
 
@@ -44,7 +44,6 @@ import riff_api
 
 response = riff_api.generate_from_topic(
     "Indie pop banger about my dog Boris"
-    save="boris.wav",
 )
 riff_api.save_audio(response, "boris.wav")
 ```
@@ -62,7 +61,7 @@ curl -X POST \
 
 The file [datatypes.py](riffusion_api/datatypes.py) shows the schema of the API.
 
-## Usage with `/riff`
+## `/riff`
 
 Run via request:
 
