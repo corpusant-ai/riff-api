@@ -1,4 +1,9 @@
-from .api import generate, generate_from_topic, save_audio
+from .api import (
+    generate,
+    generate_from_request,
+    generate_from_topic,
+    save_audio,
+)
 from .datatypes import (
     Prompt,
     RiffRequest,
@@ -14,6 +19,7 @@ __all__ = [
     "TimestampedWord",
     "TopicRequest",
     "generate",
+    "generate_from_request",
     "generate_from_topic",
     "save_audio",
 ]

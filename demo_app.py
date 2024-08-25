@@ -3,7 +3,7 @@ import time
 
 import streamlit as st
 
-from riffusion_api import generate_music, Prompt, RiffRequest
+import riff_api
 
 default_lyrics = """
 [Verse]
@@ -18,13 +18,13 @@ A light from the shadows shall spring
 """.strip()
 
 prompts = [
-    Prompt(
+    riff_api.Prompt(
         text="operatic aria",
         start_s=0.0,
         end_s=20.0,
         strength=4.0,
     ),
-    Prompt(
+    riff_api.Prompt(
         text="tech house jazz",
         start_s=15.0,
         end_s=30.0,
@@ -76,14 +76,14 @@ def main() -> None:
 
         st.form_submit_button("Generate", type="primary")
 
-    request = RiffRequest(
+    request = riff_api.RiffRequest(
         prompts=prompts,
         lyrics=lyrics,
         seed=None,
     )
 
     start_s = time.time()
-    response = generate_music(request)
+    response = riff_api.generate_from_request(request)
     duration_s = time.time() - start_s
 
     with st.expander("Request / Response"):
