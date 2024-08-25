@@ -1,17 +1,47 @@
 # 🎸 Riffusion API
 
-This repo contains examples for creating music with the Riffusion API, either vai 
+This repo contains examples for creating music with the Riffusion API, and a tiny
+Python client with a typed interface.
 
-> [!NOTE]  
-> This API is in a private beta and subject to change. Contact api@riffusion.com for questions.
+This API is in a private beta and subject to change. Contact api@riffusion.com for questions.
 
-To use the API, first set your API key:
+## Getting Started
+Set your API key:
 
 ```bash
 export RIFFUSION_API_KEY="<your-api-key>"
 ```
 
+Install the Python client:
+```bash
+pip install riff-api
+```
+
+Make some music!
+```python
+import riff_api
+
+riff_api.generate_from_topic(
+    topic="Indie pop banger about my dog Boris",
+    save_to="output.wav",
+)
+```
+
+Listen: [output.wav](https://storage.googleapis.com/corpusant-public/output.wav)
+
 ## `/topic`
+
+Run via Python client:
+
+```python
+import riff_api
+
+riff_api.generate_from_topic(
+    topic="Indie pop banger about my dog Boris",
+    save_to="output.wav",
+)
+```
+
 
 Run via request (`pip install requests`):
 
@@ -33,19 +63,6 @@ response = requests.post(
 
 with open("output.wav", "wb") as f:
     f.write(base64.b64decode(response["audio_b64"]))
-```
-
-Listen: [output.wav](https://storage.googleapis.com/corpusant-public/output.wav)
-
-Run via Python client (`pip install .`):
-
-```python
-import riff_api
-
-response = riff_api.generate_from_topic(
-    "Indie pop banger about my dog Boris"
-)
-riff_api.save_audio(response, "boris.wav")
 ```
 
 Run via curl:
@@ -117,7 +134,7 @@ riff_api.save_audio(response.audio_b64, "output.wav")
 
 ## Examples
 
-The `examples` directory explains use cases of the API. To run, first `pip install .` then execute with Python 3.
+The `examples` directory explains use cases of the API. To run, first `pip install riff-api` then execute with Python.
 
  * [1_simple.py](examples/1_simple.py) - Use lyrics and a sound prompt to create music.
 

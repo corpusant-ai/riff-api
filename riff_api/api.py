@@ -18,6 +18,7 @@ def generate(
     audio_format: T.Literal["wav", "mp3", "m4a"] = "wav",
     moderate_inputs: bool = False,
     api_key: str | None = None,
+    save_to: str | None = None,
 ) -> RiffResponse:
     """
     Generate music using sound prompts and lyrics.
@@ -31,12 +32,14 @@ def generate(
             moderate_inputs=moderate_inputs,
         ),
         api_key=api_key,
+        save_to=save_to,
     )
 
 
 def generate_from_request(
     request: RiffRequest,
     api_key: str | None = None,
+    save_to: str | None = None,
 ) -> RiffResponse:
     """
     Generate music using sound prompts and lyrics.
@@ -52,13 +55,21 @@ def generate_from_request(
 
     response.raise_for_status()
 
-    return RiffResponse(**response.json())
+    response = RiffResponse(**response.json())
+
+    if save_to is not None:
+        assert request.audio_format == save_to.split(".")[-1], \
+            "The save extension must match the audio format"
+        save_audio(response, save_to)
+
+    return response
 
 
 def generate_from_topic(
     topic: str,
     audio_format: str = "wav",
     api_key: str | None = None,
+    save_to: str | None = None,
 ) -> RiffResponse:
     """
     Generate music using a single text prompt encapsulating both
@@ -67,18 +78,28 @@ def generate_from_topic(
     if api_key is None:
         api_key = os.environ.get("RIFFUSION_API_KEY")
 
+    request = TopicRequest(
+        topic=topic,
+        audio_format=audio_format,
+    )
+
     response = requests.post(
         url=f"{API_URL}/topic",
-        json=TopicRequest(
-            topic=topic,
-            audio_format=audio_format,
-        ).model_dump(),
+        json=request.model_dump(),
         headers={"Api-Key": api_key},
     )
 
     response.raise_for_status()
 
-    return RiffResponse(**response.json())
+    response = RiffResponse(**response.json())
+
+    if save_to is not None:
+        assert request.audio_format == save_to.split(".")[-1], \
+            "The save extension must match the audio format"
+        save_audio(response, save_to)
+
+    return response
+
 
 def save_audio(
     response: RiffResponse,
