@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "riff_api"
-version = "0.1.0"
+version = "0.1.1"
 authors = [
   { name="Hayk Martiros", email="hayk@riffusion.com" },
   { name="Naveen Iyer", email="naveen@riffusion.com" },
