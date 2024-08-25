@@ -5,7 +5,10 @@ import requests
 
 from .datatypes import Prompt, RiffRequest, RiffResponse, TopicRequest
 
-API_URL = "https://dev-backend.riffusion.com/v1"
+API_URL = os.environ.get(
+    "RIFFUSION_BACKEND_URL",
+    "https://backend.riffusion.com/v1",
+)
 
 
 def generate(
