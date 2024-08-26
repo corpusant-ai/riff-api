@@ -4,7 +4,8 @@
 
 This repo contains code for crafting music using Riffusion's foundational music models via API. You can either use the typed Python client in this library or make requests directly.
 
-Please note that this API is in a private beta and subject to change. Contact api@riffusion.com for inquiries and access.
+Please note that this API is in a private beta and subject to change.  
+Contact api@riffusion.com for inquiries and access.
 
 ## Getting Started
 Set your API key:
@@ -158,12 +159,10 @@ The full schema is in [datatypes.py](riff_api/datatypes.py).
 
 ## Streamlit Demo
 
-[demo_app.py](demo_app.py) is a basic web app built with Streamlit that
-demonstrates using the api.
+You can also play with the API using this web app:  
+[https://riff-api.streamlit.app](https://riff-api.streamlit.app)
 
-Try it: [https://riff-api.streamlit.app](https://riff-api.streamlit.app)
-
-Or run locally:
+Run the app locally with:
 
 ```bash
 pip install streamlit
