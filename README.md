@@ -44,7 +44,7 @@ The API will generate lyrics based on your topic, as well as pick specific sound
 
 Get creative with your topics! Here are a few ideas:
 
- * "Rap fun facts about Alaska's history"
+ * "Rap fun facts about Alaskan history"
  * "Explain the concept of time in French"
  * "My nephew Remi is a superhero with laser eyes. Make him a theme song with a rock orchestra"
 
@@ -107,7 +107,7 @@ The full schema is in [datatypes.py](riff_api/datatypes.py).
 
 This endpoint provides a more powerful capability for music lovers to craft the exact sound they want. You can specify custom lyrics and multiple sound prompts with individually controllable strengths and time ranges.
 
-Here's a call that creates a 10 second orchestral intro in a chillstep pop song with custom lyrics:
+Here's a call that blends an orchestral intro in a chillstep pop song with custom lyrics:
 
 ```python
 import riff_api
