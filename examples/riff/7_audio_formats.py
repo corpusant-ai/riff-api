@@ -21,7 +21,7 @@ response_wav = riff_api.create(
     seed=seed,
 )
 
-riff_api.save_audio(response_wav, "6_audio_formats.wav")
+riff_api.save_audio(response_wav, "7_audio_formats.wav")
 
 response_m4a = riff_api.create(
     prompts=[
@@ -32,7 +32,7 @@ response_m4a = riff_api.create(
     seed=seed,
 )
 
-riff_api.save_audio(response_m4a, "6_audio_formats.m4a")
+riff_api.save_audio(response_m4a, "7_audio_formats.m4a")
 
 response_mp3 = riff_api.create(
     prompts=[
@@ -43,4 +43,4 @@ response_mp3 = riff_api.create(
     seed=seed,
 )
 
-riff_api.save_audio(response_mp3, "6_audio_formats.mp3")
+riff_api.save_audio(response_mp3, "7_audio_formats.mp3")

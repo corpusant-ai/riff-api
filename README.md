@@ -2,13 +2,11 @@
 
 ![Banner](https://storage.googleapis.com/corpusant-public/banner.jpg)
 
-This repo contains examples for crafting music using an API to Riffusion's foundational music models. The API is minimal and blazing fast, but also exposes powerful controllability features.
+This repo contains code for crafting music using Riffusion's foundational music models via API. You can either use the typed Python client in this library or make requests directly.
 
-You can either use the typed Python client in this library or make requests directly. Please note that this API is in a private beta and subject to change.
+Please note that this API is in a private beta and subject to change. Contact api@riffusion.com for inquiries and access.
 
-Contact api@riffusion.com for inquiries and access.
-
-## Get Started
+## Getting Started
 Set your API key:
 
 ```bash
@@ -31,36 +29,37 @@ riff_api.create_from_topic(
 )
 ```
 
-Run multiple times to get different results.  
-Here's a sample: [output.wav](https://storage.googleapis.com/corpusant-public/output.wav)
+This will generate lyrics and music for a 30s song and return in *around 1s* ⚡️. Run multiple times to create variations.
+
+Example: [output.wav](https://storage.googleapis.com/corpusant-public/output.wav)
 
 Have fun 💙
 
 ## `/topic` Endpoint
 
-The `/topic` endpoint is the easiest way to create music. The input is a single natural language description of both the sound and lyrical content you desire.
+This endpoint creates a song from a single natural language description the desired lyrical content and/or musical style. It's the simplest way to create.
 
-Sample inputs:
+The API will generate lyrics based on your topic, as well as pick specific sound prompts. If you don't describe a musical style in your prompt, the API will choose randomly for you each time you call.
 
- * "Indie pop banger about my dog Boris"
- * "Explain the concept of time in French, piano chill"
- * "Sing facts about Kansas history"
+Get creative with your topics! Here are a few ideas:
 
-Run via Python client, this time saving the response:
+ * "Rap fun facts about Alaska's history"
+ * "Explain the concept of time in French"
+ * "My nephew Remi is a superhero with laser eyes. Make him a theme song with a rock orchestra"
+
+Run via Python client, saving the audio (decoded from base64) and printing the generated lyrics:
 
 ```python
 import riff_api
 
 response = riff_api.create_from_topic(
-    "Indie pop banger about my dog Boris",
+    "Rap fun facts about Alaskan history",
     save_to="output.wav",
 )
 print(response.lyrics)
 ```
 
-The audio, lyrics, and sound prompts are returned in the response object. The audio bytes are base64 encoded.
-
-Alternatively, run directly via request:
+Alternatively, execute a request directly instead of using the Python client:
 
 ```python
 import base64
@@ -74,7 +73,7 @@ response = requests.post(
         "Api-Key": os.environ.get("RIFFUSION_API_KEY"),
     },
     json={
-        "topic": "Indie pop banger about my dog Boris",
+        "topic": "Rap fun facts about Alaskan history",
     },
 ).json()
 
@@ -88,26 +87,26 @@ Or via curl:
 curl -X POST \
   -H "Content-Type: application/json" \
   -H "Api-Key: ${RIFFUSION_API_KEY}" \
-  -d '{"topic": "Indie pop banger about my dog Boris"}' \
-  https://backend.riffusion.com/v1/topic \
+  -d '{"topic": "Rap fun facts about Alaskan history"}' \
+  https://dev-backend.riffusion.com/v1/topic \
   | jq -r .audio_b64 | base64 -d > output.wav
 ```
 
-If you don't describe a musical style in your prompt, the API will choose randomly for you each time you call.
+### Examples
 
-The schema of the entire API is defined in [datatypes.py](riff_api/datatypes.py).
+Check out [examples/topic](examples/topic) for runnable scripts that demonstrate this endpoint.
 
-### `/topic` Examples
+ * [1_request.py](examples/topic/1_request.py) - Call the topic endpoint with `requests`, not using the Python client.
 
- * [8_topic.py](examples/topic/8_topic.py) - Use a single natural language sentence to generate music with the topic endpoint.
+ * [2_standard.py](examples/topic/2_standard.py) - Call the topic endpoint with the Python client.
 
- * [6_audio_formats.py](examples/riff/6_audio_formats.py) - Change the audio format of the response.
+The full schema is in [datatypes.py](riff_api/datatypes.py).
 
 ## `/riff` Endpoint
 
-The `/riff` endpoint gives lower level control over the generation. You specify custom lyrics and a list of sound prompts with individual strengths and time ranges.
+This endpoint provides a more powerful capability for music lovers to craft the exact sound they want. You can specify custom lyrics and multiple sound prompts with individually controllable strengths and time ranges.
 
-Run via Python client:
+Here's a call that creates a 10 second orchestral intro in a chillstep pop song with custom lyrics:
 
 ```python
 import riff_api
@@ -119,48 +118,27 @@ I'm a satellite
 And I want to be by your side
 """.strip()
 
-response = riff_api.create(
+riff_api.create(
     prompts=[
-        Prompt(text="chillstep pop"),
+        riff_api.Prompt(
+            text="chillstep pop",
+            strength=4.0,
+        ),
+        riff_api.Prompt(
+            text="orchestral cellos",
+            strength=3.0,
+            start_s=0.0,
+            end_s=10.0,
+        ),
     ],
     lyrics=lyrics,
     save_to="output.wav",
 )
 ```
 
-Run via request:
+### Examples
 
-```python
-import base64
-import os
-import requests
-
-response = requests.post(
-    'https://backend.riffusion.com/v1/riff',
-    headers={
-        'Content-Type': 'application/json',
-        'Api-Key': os.environ.get("RIFFUSION_API_KEY"),
-    },
-    json={
-        'prompts': [
-            { "text": "chillstep pop" },
-        ],
-        'lyrics': (
-            "Hello from outer space\n"
-            "Can you hear me?\n"
-            "I'm a satellite\n"
-            "And I want to be by your side"
-        ),
-    },
-).json()
-
-with open("output.wav", "wb") as f:
-    f.write(base64.b64decode(response["audio_b64"]))
-```
-
-### `/riff` Examples
-
-The [examples/riff](examples/riff) directory explains use cases of the API.
+Check out [examples/riff](examples/riff) for runnable scripts that demonstrate this endpoint.
 
  * [1_simple.py](examples/riff/1_simple.py) - Use lyrics and a sound prompt to create music.
 
@@ -174,6 +152,9 @@ The [examples/riff](examples/riff) directory explains use cases of the API.
 
  * [6_timestamped_lyrics.py](examples/riff/6_timestamped_lyrics.py) - Print the timestamp of each lyric from the generation response.
 
+ * [7_audio_formats.py](examples/riff/7_audio_formats.py) - Change the audio format of the response.
+
+The full schema is in [datatypes.py](riff_api/datatypes.py).
 
 ## Streamlit Demo
 

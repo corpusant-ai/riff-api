@@ -3,6 +3,42 @@ import typing as T
 from pydantic import BaseModel
 
 
+class TopicRequest(BaseModel):
+    """
+    Input to the /topic endpoint
+    """
+
+    topic: str
+    """ Text description of the song to sing (lyrics and sound together) """
+
+    audio_format: str = "wav"
+    """ Returned audio format """
+
+
+class TimestampedWord(BaseModel):
+    """
+    A word with a timestamp
+    """
+
+    text: str
+    start_s: float
+
+
+class RiffResponse(BaseModel):
+    """
+    Output of the /riff and /topic endpoints
+    """
+
+    id: str
+    """ UUID of the output"""
+
+    audio_b64: str
+    """ Base64 encoded bytes of the requested audio format """
+
+    timestamped_lyrics: list[TimestampedWord]
+    """ Timestamps for each word in the lyrics """
+
+
 class Prompt(BaseModel):
     """
     A sound prompt to use for music generation
@@ -40,39 +76,3 @@ class RiffRequest(BaseModel):
 
     moderate_inputs: bool = True
     """ If True, runs moderation checks on the prompts and lyrics """
-
-
-class TimestampedWord(BaseModel):
-    """
-    A word from the lyrics with a start and end time
-    """
-
-    text: str
-    start_s: float
-
-
-class RiffResponse(BaseModel):
-    """
-    Output of the /riff endpoint
-    """
-
-    id: str
-    """ UUID of the output"""
-
-    audio_b64: str
-    """ Base64 encoded bytes of the requested audio format """
-
-    timestamped_lyrics: list[TimestampedWord]
-    """ Timestamps for each word in the lyrics """
-
-
-class TopicRequest(BaseModel):
-    """
-    Input to the /topic endpoint
-    """
-
-    topic: str
-    """ Text description of the song to sing (lyrics and sound together) """
-
-    audio_format: str = "wav"
-    """ Returned audio format """
