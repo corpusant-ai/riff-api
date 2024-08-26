@@ -1,9 +1,14 @@
-# 🎸 Riffusion API
+# Riffusion API
 
-This repo contains examples for creating music with the Riffusion API, and a tiny
-Python client with a typed interface.
+![Banner](https://storage.googleapis.com/corpusant-public/banner.jpg)
 
-This API is in a private beta and subject to change. Contact api@riffusion.com for questions.
+This repo contains examples for crafting music from text prompts using the Riffusion API. The API is minimal and blazing fast, but also exposes powerful controllability features.
+
+You can either use the typed Python client in this library or make requests directly.
+
+This API is in a private beta and subject to change.  
+
+Contact api@riffusion.com for inquiries and access.
 
 ## Getting Started
 Set your API key:
@@ -17,21 +22,7 @@ Install the Python client:
 pip install riff-api
 ```
 
-Make some music!
-```python
-import riff_api
-
-riff_api.generate_from_topic(
-    topic="Indie pop banger about my dog Boris",
-    save_to="output.wav",
-)
-```
-
-Listen: [output.wav](https://storage.googleapis.com/corpusant-public/output.wav)
-
-## `/topic`
-
-Run via Python client:
+Make some music:
 
 ```python
 import riff_api
@@ -42,8 +33,36 @@ riff_api.generate_from_topic(
 )
 ```
 
+Have fun 💙
 
-Run via request (`pip install requests`):
+Here's a sample creation: [output.wav](https://storage.googleapis.com/corpusant-public/output.wav)
+
+## Topic Mode
+
+The `/topic` endpoint is the easiest way to create music. The input is a single natural language description of both the sound and lyrical content you desire.
+
+Sample inputs:
+
+ * "Indie pop banger about my dog Boris"
+ * "Explain the concept of time in French, piano chill"
+ * "Sing facts about Kansas history"
+
+Run via Python client, this time saving the response:
+
+```python
+import riff_api
+
+response = riff_api.generate_from_topic(
+    topic="Indie pop banger about my dog Boris",
+)
+print(response.lyrics)
+
+riff_api.save_audio(response, "output.wav")
+```
+
+The audio, lyrics, and sound prompts are returned in the response. The audio bytes are base64 encoded in the response.
+
+Alternatively, run directly via request:
 
 ```python
 import base64
@@ -65,7 +84,7 @@ with open("output.wav", "wb") as f:
     f.write(base64.b64decode(response["audio_b64"]))
 ```
 
-Run via curl:
+Or via curl:
 
 ```bash
 curl -X POST \
@@ -76,9 +95,35 @@ curl -X POST \
   | jq -r .audio_b64 | base64 -d > output.wav
 ```
 
-The file [datatypes.py](riffusion_api/datatypes.py) shows the schema of the API.
+If you don't describe a musical style in your prompt, the API will choose randomly for you. The output is not deterministic, so you can run the same prompt multiple times to get different results.
 
-## `/riff`
+The schema of the entire API is defined in [datatypes.py](riff_api/datatypes.py).
+
+## Custom Mode
+
+The `/custom` endpoint gives lower level control over the generation. You specify custom lyrics and a list of sound prompts with individual strengths and time ranges.
+
+Run via Python client:
+
+```python
+import riff_api
+
+lyrics = """
+Hello from outer space
+Can you hear me?
+I'm a satellite
+And I want to be by your side
+""".strip()
+
+response = riff_api.generate(
+    prompts=[
+        Prompt(text="chillstep pop"),
+    ],
+    lyrics=lyrics,
+)
+
+riff_api.save_audio(response, "output.wav")
+```
 
 Run via request:
 
@@ -108,28 +153,6 @@ response = requests.post(
 
 with open("output.wav", "wb") as f:
     f.write(base64.b64decode(response["audio_b64"]))
-```
-
-Run via Python client:
-
-```python
-import riff_api
-
-lyrics = """
-Hello from outer space
-Can you hear me?
-I'm a satellite
-And I want to be by your side
-""".strip()
-
-response = riff_api.generate(
-    prompts=[
-        Prompt(text="chillstep pop"),
-    ],
-    lyrics=lyrics,
-)
-
-riff_api.save_audio(response.audio_b64, "output.wav")
 ```
 
 ## Examples
