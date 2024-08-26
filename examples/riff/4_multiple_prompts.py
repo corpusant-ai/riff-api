@@ -11,7 +11,7 @@ Gather 'round, the time is here,
 For love and laughter, far and near.
 """.strip()
 
-response = riff_api.generate(
+response = riff_api.create(
     prompts=[
         riff_api.Prompt(
             text="punk rock",

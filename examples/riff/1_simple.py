@@ -10,7 +10,7 @@ I'm a satellite
 And I want to be by your side
 """.strip()
 
-response = riff_api.generate(
+response = riff_api.create(
     prompts=[
         riff_api.Prompt(text="chillstep pop"),
     ],

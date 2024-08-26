@@ -18,7 +18,7 @@ The crownless again shall be king.
 # Use the seed to preserve the overall structure
 seed = 90
 
-variation_a = riff_api.generate(
+variation_a = riff_api.create(
     prompts=[
         riff_api.Prompt(text="country folk, male singer"),
     ],
@@ -28,7 +28,7 @@ variation_a = riff_api.generate(
 
 riff_api.save_audio(variation_a, "3_variations_a.wav")
 
-variation_b = riff_api.generate(
+variation_b = riff_api.create(
     prompts=[
         riff_api.Prompt(text="country folk, female singer"),
     ],

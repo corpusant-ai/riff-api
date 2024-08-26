@@ -30,7 +30,7 @@ prompts = [
     ),
 ]
 
-response = riff_api.generate(
+response = riff_api.create(
     prompts=prompts,
     lyrics=lyrics,
 )

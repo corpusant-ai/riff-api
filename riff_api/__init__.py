@@ -1,7 +1,7 @@
 from .api import (
-    generate,
-    generate_from_request,
-    generate_from_topic,
+    create,
+    create_from_request,
+    create_from_topic,
     save_audio,
 )
 from .datatypes import (
@@ -18,8 +18,8 @@ __all__ = [
     "RiffResponse",
     "TimestampedWord",
     "TopicRequest",
-    "generate",
-    "generate_from_request",
-    "generate_from_topic",
+    "create",
+    "create_from_request",
+    "create_from_topic",
     "save_audio",
 ]

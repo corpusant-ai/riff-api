@@ -11,61 +11,7 @@ API_URL = os.environ.get(
 )
 
 
-def generate(
-    prompts: list[Prompt],
-    lyrics: str | None = None,
-    seed: int | None = None,
-    audio_format: T.Literal["wav", "mp3", "m4a"] = "wav",
-    moderate_inputs: bool = False,
-    api_key: str | None = None,
-    save_to: str | None = None,
-) -> RiffResponse:
-    """
-    Generate music using sound prompts and lyrics.
-    """
-    return generate_from_request(
-        RiffRequest(
-            prompts=prompts,
-            lyrics=lyrics,
-            seed=seed,
-            audio_format=audio_format,
-            moderate_inputs=moderate_inputs,
-        ),
-        api_key=api_key,
-        save_to=save_to,
-    )
-
-
-def generate_from_request(
-    request: RiffRequest,
-    api_key: str | None = None,
-    save_to: str | None = None,
-) -> RiffResponse:
-    """
-    Generate music using sound prompts and lyrics.
-    """
-    if api_key is None:
-        api_key = os.environ.get("RIFFUSION_API_KEY")
-
-    response = requests.post(
-        url=f"{API_URL}/riff",
-        json=request.model_dump(),
-        headers={"Api-Key": api_key},
-    )
-
-    response.raise_for_status()
-
-    response = RiffResponse(**response.json())
-
-    if save_to is not None:
-        assert request.audio_format == save_to.split(".")[-1], \
-            "The save extension must match the audio format"
-        save_audio(response, save_to)
-
-    return response
-
-
-def generate_from_topic(
+def create_from_topic(
     topic: str,
     audio_format: str = "wav",
     api_key: str | None = None,
@@ -91,14 +37,71 @@ def generate_from_topic(
 
     response.raise_for_status()
 
-    response = RiffResponse(**response.json())
+    riff_response = RiffResponse(**response.json())
 
     if save_to is not None:
-        assert request.audio_format == save_to.split(".")[-1], \
-            "The save extension must match the audio format"
-        save_audio(response, save_to)
+        assert (
+            request.audio_format == save_to.split(".")[-1]
+        ), "The save extension must match the audio format"
+        save_audio(riff_response, save_to)
 
-    return response
+    return riff_response
+
+
+def create(
+    prompts: list[Prompt],
+    lyrics: str | None = None,
+    seed: int | None = None,
+    audio_format: T.Literal["wav", "mp3", "m4a"] = "wav",
+    moderate_inputs: bool = False,
+    api_key: str | None = None,
+    save_to: str | None = None,
+) -> RiffResponse:
+    """
+    Generate music using sound prompts and lyrics.
+    """
+    return create_from_request(
+        RiffRequest(
+            prompts=prompts,
+            lyrics=lyrics,
+            seed=seed,
+            audio_format=audio_format,
+            moderate_inputs=moderate_inputs,
+        ),
+        api_key=api_key,
+        save_to=save_to,
+    )
+
+
+def create_from_request(
+    request: RiffRequest,
+    api_key: str | None = None,
+    save_to: str | None = None,
+) -> RiffResponse:
+    """
+    Generate music given a RiffRequest object containing
+    lyrics and sound prompts.
+    """
+    if api_key is None:
+        api_key = os.environ.get("RIFFUSION_API_KEY")
+
+    response = requests.post(
+        url=f"{API_URL}/riff",
+        json=request.model_dump(),
+        headers={"Api-Key": api_key},
+    )
+
+    response.raise_for_status()
+
+    riff_response = RiffResponse(**response.json())
+
+    if save_to is not None:
+        assert (
+            request.audio_format == save_to.split(".")[-1]
+        ), "The save extension must match the audio format"
+        save_audio(riff_response, save_to)
+
+    return riff_response
 
 
 def save_audio(

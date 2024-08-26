@@ -83,7 +83,7 @@ def main() -> None:
     )
 
     start_s = time.time()
-    response = riff_api.generate_from_request(request)
+    response = riff_api.create_from_request(request)
     duration_s = time.time() - start_s
 
     with st.expander("Request / Response"):

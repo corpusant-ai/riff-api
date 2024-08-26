@@ -12,7 +12,7 @@ And I want to be by your side
 
 seed = 42
 
-response_wav = riff_api.generate(
+response_wav = riff_api.create(
     prompts=[
         riff_api.Prompt(text="chillstep pop"),
     ],
@@ -23,7 +23,7 @@ response_wav = riff_api.generate(
 
 riff_api.save_audio(response_wav, "6_audio_formats.wav")
 
-response_m4a = riff_api.generate(
+response_m4a = riff_api.create(
     prompts=[
         riff_api.Prompt(text="chillstep pop"),
     ],
@@ -34,7 +34,7 @@ response_m4a = riff_api.generate(
 
 riff_api.save_audio(response_m4a, "6_audio_formats.m4a")
 
-response_mp3 = riff_api.generate(
+response_mp3 = riff_api.create(
     prompts=[
         riff_api.Prompt(text="chillstep pop"),
     ],
