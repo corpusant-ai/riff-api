@@ -29,9 +29,9 @@ riff_api.create_from_topic(
 )
 ```
 
-This will generate lyrics and music for a 30s song and return in *around 1s* ⚡️. Run multiple times to create variations.
+This will generate lyrics and music for a 30s song. Run multiple times to create variations.
 
-Example: [output.wav](https://storage.googleapis.com/corpusant-public/output.wav)
+Sample: [output.wav](https://storage.googleapis.com/corpusant-public/output.wav)
 
 Have fun 💙
 
@@ -88,7 +88,7 @@ curl -X POST \
   -H "Content-Type: application/json" \
   -H "Api-Key: ${RIFFUSION_API_KEY}" \
   -d '{"topic": "Rap fun facts about Alaskan history"}' \
-  https://dev-backend.riffusion.com/v1/topic \
+  https://backend.riffusion.com/v1/topic \
   | jq -r .audio_b64 | base64 -d > output.wav
 ```
 
@@ -158,9 +158,8 @@ The full schema is in [datatypes.py](riff_api/datatypes.py).
 
 ## Streamlit Demo
 
-[demo_app.py](demo_app.py) is a basic web app that
-demonstrates using the api to create musical transitions using two sound prompts
-with time ranges.
+[demo_app.py](demo_app.py) is a basic web app built with Streamlit that
+demonstrates using the api.
 
 Try it: [https://riffusion-api-demo.streamlit.app/](https://riffusion-api-demo.streamlit.app/)
 
