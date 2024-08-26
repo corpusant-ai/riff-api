@@ -24,21 +24,6 @@ class TimestampedWord(BaseModel):
     start_s: float
 
 
-class RiffResponse(BaseModel):
-    """
-    Output of the /riff and /topic endpoints
-    """
-
-    id: str
-    """ UUID of the output"""
-
-    audio_b64: str
-    """ Base64 encoded bytes of the requested audio format """
-
-    timestamped_lyrics: list[TimestampedWord]
-    """ Timestamps for each word in the lyrics """
-
-
 class Prompt(BaseModel):
     """
     A sound prompt to use for music generation
@@ -76,3 +61,24 @@ class RiffRequest(BaseModel):
 
     moderate_inputs: bool = True
     """ If True, runs moderation checks on the prompts and lyrics """
+
+
+class RiffResponse(BaseModel):
+    """
+    Output of the /riff and /topic endpoints
+    """
+
+    id: str
+    """ UUID of the output"""
+
+    audio_b64: str
+    """ Base64 encoded bytes of the requested audio format """
+
+    lyrics: str | None
+    """ Lyrics of the song, if present """
+
+    timestamped_lyrics: list[TimestampedWord] | None
+    """ Timestamps for each word in the lyrics """
+
+    prompts: list[Prompt]
+    """ List of sound prompts used to create the sample """

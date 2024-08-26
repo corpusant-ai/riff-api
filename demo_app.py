@@ -1,6 +1,7 @@
 import base64
 import time
 
+import requests
 import streamlit as st
 
 import riff_api
@@ -51,7 +52,7 @@ def main() -> None:
         [
             "**Topic Endpoint**",
             "**Riff Endpoint**",
-            "**Help**",
+            "**Setup**",
         ]
     )
 
@@ -63,7 +64,7 @@ def main() -> None:
 
     with tabs[2]:
         with st.container(border=True):
-            help_tab()
+            setup_tab()
 
     if "response" not in st.session_state:
         return
@@ -78,6 +79,13 @@ def main() -> None:
     st.audio(audio_bytes, format="audio/wav")
     st.caption(f"⚡️ Generated in {duration_s:.2f} seconds")
 
+    prompt_str = ", ".join([prompt.text for prompt in response.prompts])
+    st.write(f"##### {prompt_str}")
+
+    # Display lyrics
+    if response.lyrics:
+        st.text(response.lyrics)
+
 
 def topic_tab() -> None:
     with st.form("topic_form", border=True):
@@ -90,14 +98,10 @@ def topic_tab() -> None:
     if not submitted:
         return
 
-    start_s = time.time()
-    response = riff_api.create_from_topic(topic)
-    duration_s = time.time() - start_s
-
-    st.session_state.response = response
-    st.session_state.duration_s = duration_s
-
-    # TODO(hayk): Display lyrics
+    call_api(
+        riff_api.create_from_topic,
+        topic,
+    )
 
 
 def riff_tab() -> None:
@@ -139,28 +143,57 @@ def riff_tab() -> None:
         seed=None,
     )
 
+    call_api(
+        riff_api.create_from_request,
+        request,
+    )
+
+
+def call_api(func, *args, **kwargs) -> None:
+    if "api_key" not in st.session_state:
+        st.error("Please enter an API key in the Setup tab")
+        return
+
+    api_key = st.session_state.api_key
+    if not api_key:
+        st.info(
+            "Enter your API key in the Setup tab. "
+            "Contact api@riffusion.com for access."
+        )
+        return
+
     start_s = time.time()
-    response = riff_api.create_from_request(request)
-    duration_s = time.time() - start_s
 
+    try:
+        response = func(
+            *args,
+            **kwargs,
+            api_key=api_key,
+        )
+    except requests.exceptions.HTTPError as e:
+        if e.response.status_code == 401:
+            st.error("[401] Unauthorized API Key")
+        else:
+            st.error(f"HTTP Error: {e}")
+        return
+    except Exception as e:
+        st.error(f"Error: {e}")
+        return
+
+    st.session_state.duration_s = time.time() - start_s
     st.session_state.response = response
-    st.session_state.duration_s = duration_s
 
 
-@st.cache_data
-def help_tab() -> None:
-    st.write("This is a basic web demo for the Riffusion API.")
+def setup_tab() -> None:
+    st.write(
+        "This is a web demo for creating music with the Riffusion API.  \n"
+        "Enter your API key to get started, or contact api@riffusion.com for access."
+    )
+
+    api_key = st.text_input("API Key", type="password")
+    st.session_state.api_key = api_key
+
     st.write("See https://github.com/corpusant-ai/riff-api for more information.")
-
-    with st.expander("JSON Schemas"):
-        st.write("#### TopicRequest")
-        st.write(riff_api.TopicRequest.model_json_schema())
-
-        st.write("#### RiffResponse")
-        st.write(riff_api.RiffResponse.model_json_schema())
-
-        st.write("#### RiffRequest")
-        st.write(riff_api.RiffRequest.model_json_schema())
 
 
 if __name__ == "__main__":

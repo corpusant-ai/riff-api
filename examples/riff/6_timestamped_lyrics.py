@@ -23,5 +23,6 @@ response = riff_api.create(
 )
 
 # Print each word's start time
+assert response.timestamped_lyrics is not None
 for word in response.timestamped_lyrics:
     print(f"{word.text:<12s} -> {word.start_s:6.1f}s")
