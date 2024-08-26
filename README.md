@@ -161,7 +161,7 @@ The full schema is in [datatypes.py](riff_api/datatypes.py).
 [demo_app.py](demo_app.py) is a basic web app built with Streamlit that
 demonstrates using the api.
 
-Try it: [https://riffusion-api-demo.streamlit.app/](https://riffusion-api-demo.streamlit.app/)
+Try it: [https://riff-api.streamlit.app](https://riff-api.streamlit.app)
 
 Or run locally:
 
